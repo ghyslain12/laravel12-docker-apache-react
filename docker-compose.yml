@@ -36,7 +36,7 @@ services:
   # Laravel Apache server container
   app:
     build:
-      context: .             # On met le contexte à la racine du projet
+      context: .
       dockerfile: ./docker/Dockerfile
     container_name: laravel_app
     restart: on-failure

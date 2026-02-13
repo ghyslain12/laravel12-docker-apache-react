@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class SaleUpdateRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'titre'       => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'customer_id' => 'required|exists:customers,id',
+            // Pour les materials : on accepte un tableau d'IDs
+            //'materials'   => 'nullable|array',
+            //'materials.*' => 'exists:materials,id',
+        ];
+    }
+}

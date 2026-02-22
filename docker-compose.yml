@@ -1,6 +1,4 @@
-version: "3.8"
 services:
-  # MySQL Database container
   db:
     image: mysql:8.4
     container_name: app_db_laravel_react
@@ -17,7 +15,6 @@ services:
     networks:
       - app_laravel_react
 
-  # phpMyAdmin container
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: app_phpmyadmin_laravel_react
@@ -33,7 +30,6 @@ services:
     networks:
       - app_laravel_react
 
-  # Laravel Apache server container
   app:
     build:
       context: .
@@ -41,18 +37,18 @@ services:
     container_name: laravel_app
     restart: on-failure
     volumes:
-      - ./docker/vhosts:/etc/apache2/sites-enabled
       - ./project:/var/www
       - /var/www/vendor
+      - ./docker/php/custom-opcache.ini:/usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
     ports:
-      - "8741:8741"
-      - "5173:5173" # for blade frontend
+      - "8741:8000"
+      - "5173:5173"
     depends_on:
       - db
+      - redis
     networks:
       - app_laravel_react
 
-  # react frontend container
   react-app:
     build:
       context: ./project/resources/crud-react-vite
@@ -72,15 +68,9 @@ services:
     depends_on:
       - app
 
-  # Redis container
   redis:
     image: redis:alpine
     container_name: app_redis
-    restart: on-failure
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis-data:/data
     networks:
       - app_laravel_react
 
@@ -90,5 +80,3 @@ networks:
 
 volumes:
   db-data:
-  redis-data:
-

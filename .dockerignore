@@ -5,3 +5,6 @@ dist
 *.md
 vendor
 storage/*.key
+project/node_modules
+project/vendor
+project/resources/crud-react-vite/node_modules
